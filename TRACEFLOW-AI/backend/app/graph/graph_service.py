@@ -197,7 +197,7 @@ class GraphIntelligenceService:
 
         cycles: List[List[str]] = []
         try:
-            for cyc in nx.simple_cycles(simple_di):
+            for cyc in nx.simple_cycles(simple_di, length_bound=5):
                 if 2 <= len(cyc) <= 5 and acc.id in cyc:
                     cycles.append(cyc)
                     if len(cycles) >= 10:

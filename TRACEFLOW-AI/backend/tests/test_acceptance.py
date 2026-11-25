@@ -181,10 +181,18 @@ def test_11_permissions_and_tenant_isolation(client):
     assert m_txs.json()["total"] == 0
 
 
-def test_12_error_handling_invalid_csv_and_unauth(client):
-    # Unauthenticated request
+def test_12_error_handling_invalid_csv_and_unauth(client, monkeypatch):
+    from app.core import deps as core_deps
+
+    # Invalid bearer token is always rejected with 401 even in demo mode
+    bad_tok = client.get("/api/v1/transactions", headers={"Authorization": "Bearer invalid-token"})
+    assert bad_tok.status_code == 401
+
+    # Unauthenticated request is rejected with 401 in jwt/production mode
+    monkeypatch.setattr(core_deps.settings, "APP_AUTH_MODE", "jwt")
     unauth = client.get("/api/v1/transactions")
     assert unauth.status_code == 401
+    monkeypatch.setattr(core_deps.settings, "APP_AUTH_MODE", "demo")
 
     # Invalid CSV rows (negative amount, bad currency, missing fields)
     token = _login(client, "admin@traceflow.ai", "TraceflowDemo@2026!")

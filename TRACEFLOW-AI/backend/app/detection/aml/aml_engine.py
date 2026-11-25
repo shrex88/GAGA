@@ -64,7 +64,7 @@ def run_aml_detection(db: Session, bank_id: str) -> Dict[str, Any]:
             if data.get("amount", 0.0) >= 2000.0:
                 high_val_di.add_edge(u, v)
 
-        for cyc in nx.simple_cycles(high_val_di):
+        for cyc in nx.simple_cycles(high_val_di, length_bound=max_cycle_hops):
             if 3 <= len(cyc) <= max_cycle_hops:
                 sig = ("cycle", tuple(sorted(cyc)))
                 if sig in seen_signatures:
