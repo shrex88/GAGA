@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+*.db
+*.sqlite3
+
+# Node / Frontend
+node_modules/
+dist/
+.vite/
+*.local
+
+# Env & Secrets
+.env
+.env.*
+!.env.example
+
+# Generated artifacts
+**/models/*.joblib
+**/models/*.pkl
+**/data/synthetic/*.csv
+**/generated_reports/
+.DS_Store
